@@ -1,0 +1,9 @@
+---
+address-pools:
+  - name: default
+    protocol: layer2
+    addresses:
+      # for kind
+      # https://kind.sigs.k8s.io/docs/user/loadbalancer/#setup-address-pool-used-by-loadbalancers
+      # docker network inspect -f '{{.IPAM.Config}}' kind
+      - 172.18.255.200-172.18.255.250
