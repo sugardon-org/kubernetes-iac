@@ -1,0 +1,6 @@
+---
+# https://www.pulumi.com/docs/reference/pulumi-yaml/
+name: kubernetes-iac-local
+runtime: nodejs
+description: A minimal Kubernetes TypeScript Pulumi program
+main: src/
