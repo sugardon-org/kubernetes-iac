@@ -5,4 +5,3 @@ kind: Kustomization
 
 resources:
   - github.com/metallb/metallb//manifests?ref=v0.9.6
-  #- https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/namespace.yaml
