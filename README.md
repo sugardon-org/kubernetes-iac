@@ -6,6 +6,14 @@ https://www.pulumi.com/docs/get-started/kubernetes/
 
 ## local
 
+1. setup local kind cluster
+
+```bash
+$ kind create cluster --config=./kind-config.yaml
+```
+
+1. pulumi
+
 ```bash
 $ yarn
 $ ENVIRONMENT=local
