@@ -1,2 +1,4 @@
 config:
   kubernetes-iac:environment: sugardon01
+  kubernetes-iac:csi-data:
+    applyNfsServer: false

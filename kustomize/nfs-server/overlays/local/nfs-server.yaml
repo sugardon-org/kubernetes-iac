@@ -1,0 +1,23 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nfs-server
+spec:
+  template:
+    spec:
+      # https://github.com/kubernetes-csi/csi-driver-nfs/blob/master/deploy/example/nfs-provisioner/nfs-server.yaml
+      containers:
+        - name: nfs-server
+          image: itsthenetwork/nfs-server-alpine:latest
+          env:
+            - name: SHARED_DIRECTORY
+              value: "/exports"
+          volumeMounts:
+            - mountPath: /exports
+              name: nfs-vol
+      volumes:
+        - name: nfs-vol
+          hostPath:
+            path: /kind-volume # modify this to specify another path to store nfs share data
+            type: DirectoryOrCreate

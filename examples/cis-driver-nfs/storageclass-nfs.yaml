@@ -1,0 +1,19 @@
+---
+# https://github.com/kubernetes-csi/csi-driver-nfs/blob/master/deploy/example/storageclass-nfs.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi
+provisioner: nfs.csi.k8s.io
+parameters:
+  # Make sure namespce
+  server: nfs-server.nfs-server.svc.cluster.local
+  share: /
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - hard
+  # Invalid Option maybe
+  #- nfsvers=4.1
+# After apply StorageClass, You can use pvc
+# https://github.com/kubernetes-csi/csi-driver-nfs/tree/master/deploy/example
