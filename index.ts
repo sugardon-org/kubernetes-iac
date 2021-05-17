@@ -3,6 +3,7 @@ import { Metallb } from "./src/metallb";
 import { IngressNginx } from "./src/ingressNginx";
 import { NfsServer } from "./src/nfsServer";
 import { CsiDriverNfs } from "./src/csiDriverNfs";
+import { Tekton } from "./src/tekton";
 
 const config = new pulumi.Config();
 export const env = config.require("environment");
@@ -43,3 +44,9 @@ const csiDriverNfs = new CsiDriverNfs("CSI Driver NFS", {
   environment: env,
 });
 export const csiDriverNfsHelmUrn = csiDriverNfs.helmUrn;
+
+const tekton = new Tekton("Tekton", {
+  environment: env,
+  kustomizePath: "./kustomize/tekton/overlays/" + env,
+});
+export const tektonKustomizeUrn = tekton.kustomizeUrn;
