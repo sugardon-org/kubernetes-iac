@@ -30,6 +30,6 @@ $ yarn
 $ ENVIRONMENT=sugardon01
 $ pulumi login
 $ pulumi stack select $ENVIRONMENT
-$ pulumi config set environment $ENVIRONMENT
+// check Pulumi.sugardon01.yaml before run up
 $ pulumi up
 ```
