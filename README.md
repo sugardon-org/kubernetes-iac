@@ -18,8 +18,7 @@ $ kind create cluster --config=./kind-config.yaml
 $ yarn
 $ export PULUMI_CONFIG_PASSPHRASE=password
 $ ENVIRONMENT=local
-$ pulumi config set environment $ENVIRONMENT
-$ pulumi up
+$ pulumi up --config-file=./local-config.yaml
 ```
 
 ## sugardon01
