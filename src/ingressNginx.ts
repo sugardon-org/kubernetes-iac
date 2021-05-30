@@ -4,7 +4,6 @@ import * as k8s from "@pulumi/kubernetes";
 interface ingressNginxProps {
   environment: string;
   namespace?: string;
-  deployDefaultService?: boolean;
 }
 
 export class IngressNginx extends pulumi.ComponentResource {
