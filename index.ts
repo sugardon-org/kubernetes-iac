@@ -1,6 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import { Metallb } from "./src/metallb";
 import { IngressNginx } from "./src/ingressNginx";
+import { CertManager } from "./src/certManager";
 import { NfsServer } from "./src/nfsServer";
 import { CsiDriverNfs } from "./src/csiDriverNfs";
 import { Tekton } from "./src/tekton";
@@ -20,6 +21,16 @@ const ingressNginx = new IngressNginx("IngressNginx", {
   namespace: "ingress-nginx",
 });
 export const ingressNginxHelmUrn = ingressNginx.helmUrn;
+
+export const applyCenterManager = config.getBoolean("applyCertManager");
+export let certManagerHelmUrn = pulumi.output("Not Apply CertManager");
+if (applyCenterManager) {
+  const certManager = new CertManager("CertManager", {
+    environment: env,
+    namespace: "cert-manager",
+  });
+  certManagerHelmUrn = certManager.helmUrn;
+}
 
 // CSI
 interface CsiData {

@@ -1,4 +1,5 @@
 config:
-  kubernetes-iac:environment: local
+  kubernetes-iac:applyCertManager: "true"
   kubernetes-iac:csi-data:
     applyNfsServer: true
+  kubernetes-iac:environment: local
