@@ -10,3 +10,6 @@ resources:
   # https://github.com/tektoncd/triggers/blob/main/docs/install.md
   - https://storage.googleapis.com/tekton-releases/triggers/previous/v0.14.1/release.yaml
   - https://storage.googleapis.com/tekton-releases/triggers/previous/v0.14.1/interceptors.yaml
+  # tekton-dashboard
+  # https://github.com/tektoncd/dashboard/blob/main/docs/install.md
+  - https://storage.googleapis.com/tekton-releases/dashboard/previous/v0.17.0/tekton-dashboard-release.yaml
