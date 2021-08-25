@@ -3,7 +3,7 @@ apiVersion: operator.tekton.dev/v1alpha1
 kind: TektonConfig
 metadata:
   name: config
-  namespace:  tekton-cicd
+  namespace: tekton-cicd
 spec:
   profile: all
   targetNamespace: tekton-cicd
