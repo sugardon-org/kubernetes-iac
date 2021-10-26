@@ -32,4 +32,6 @@ $ pulumi login
 $ pulumi stack select $ENVIRONMENT
 // check Pulumi.sugardon01.yaml before run up
 $ pulumi up
+// If different from target cluster
+// $ pulumi up --refresh
 ```
