@@ -33,7 +33,7 @@ $ export ENVIRONMENT=sugardon01
 $ pulumi login
 $ pulumi stack select $ENVIRONMENT
 # check Pulumi.sugardon01.yaml before execute
-$ pulumi up  --stack=$ENVIRONMENT
+$ pulumi up --stack=$ENVIRONMENT
 # If different from target cluster
 # $ pulumi up --refresh
 ```
