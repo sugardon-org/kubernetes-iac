@@ -19,7 +19,7 @@ $ yarn
 $ pulumi login --local
 $ export PULUMI_CONFIG_PASSPHRASE=password
 $ export ENVIRONMENT=local
-$ pulumi up --stack=$ENVIRONMENT --config-file=./local-config.yaml
+$ pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml
 ```
 
 ## sugardon01
