@@ -8,30 +8,32 @@ https://www.pulumi.com/docs/get-started/kubernetes/
 
 1. setup local kind cluster
 
-```bash
+```console
 $ kind create cluster --config=./kind-config.yaml
 ```
 
 1. pulumi
 
-```bash
+```console
 $ yarn
+$ pulumi login --local
 $ export PULUMI_CONFIG_PASSPHRASE=password
-$ ENVIRONMENT=local
-$ pulumi up --config-file=./local-config.yaml
+$ export ENVIRONMENT=local
+$ pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml
 ```
 
 ## sugardon01
 
-```bash
+```console
 $ kubectl config use-context ${SUGARDON01_CONTEXT}
 
 $ yarn
-$ ENVIRONMENT=sugardon01
+$ export PULUMI_CONFIG_PASSPHRASE=${PASSPHRASE}
+$ export ENVIRONMENT=sugardon01
 $ pulumi login
 $ pulumi stack select $ENVIRONMENT
-// check Pulumi.sugardon01.yaml before run up
-$ pulumi up
-// If different from target cluster
-// $ pulumi up --refresh
+# check Pulumi.sugardon01.yaml before execute
+$ pulumi up --stack=$ENVIRONMENT
+# If different from target cluster
+# $ pulumi up --refresh
 ```

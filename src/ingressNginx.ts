@@ -31,7 +31,7 @@ export class IngressNginx extends pulumi.ComponentResource {
 
     const ingressNginx = new k8s.helm.v3.Chart("nginx-ingress", {
       chart: "ingress-nginx",
-      version: "3.30.0",
+      version: "4.1.0",
       namespace: ingressNamaspace.metadata.name,
       fetchOpts: {
         repo: "https://kubernetes.github.io/ingress-nginx/",
@@ -40,8 +40,10 @@ export class IngressNginx extends pulumi.ComponentResource {
         // https://github.com/kubernetes/ingress-nginx/blob/master/charts/ingress-nginx/values.yaml
         controller: {
           // TODO: Use Ingress Class cf. https://kubernetes.io/ja/docs/concepts/services-networking/ingress/#ingress-class
-          // issue: https://github.com/kubernetes/ingress-nginx/pull/6882
-          ingressClass: "nginx",
+          ingressClassResource: {
+            name: "nginx",
+            default: true,
+          },
           metrics: {
             enabled: true,
           },

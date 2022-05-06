@@ -1,3 +1,4 @@
+encryptionsalt: v1:X2UxmProGzw=:v1:FPuZ1H/YIwl/3MZC:zuaAnBlxebe6zebOzLc0Sh3LPQMEow==
 config:
   kubernetes-iac:applyCertManager: "true"
   kubernetes-iac:csi-data:
