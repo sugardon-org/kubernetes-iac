@@ -46,7 +46,7 @@ export class Tekton extends pulumi.ComponentResource {
       },
       {
         parent: this,
-        dependsOn: [operator],
+        dependsOn: operator.ready,
         deleteBeforeReplace: true,
       }
     );
@@ -59,7 +59,7 @@ export class Tekton extends pulumi.ComponentResource {
       },
       {
         parent: this,
-        dependsOn: [operator, tektonConfig],
+        dependsOn: operator.ready,
       }
     );
 
