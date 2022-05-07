@@ -43,6 +43,7 @@ export class Tekton extends pulumi.ComponentResource {
         },
       },
       {
+        dependsOn: [operator],
         deleteBeforeReplace: true,
       }
     );

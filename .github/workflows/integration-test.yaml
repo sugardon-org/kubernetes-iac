@@ -19,7 +19,7 @@ jobs:
         uses: helm/kind-action@v1.2.0
         with:
           config: "./kind-config.yaml"
-          node_image: "kindest/node:v1.20.7"
+          node_image: "kindest/node:v1.23.4"
       - uses: actions/setup-node@v2
         with:
           node-version-file: ${{ matrix.dir }}/.nvmrc
@@ -40,5 +40,5 @@ jobs:
           export PULUMI_CONFIG_PASSPHRASE=password
           export ENVIRONMENT=local
           pulumi stack init $ENVIRONMENT
-          pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml --refresh --yes
+          pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml --yes
         working-directory: ${{ matrix.dir }}
