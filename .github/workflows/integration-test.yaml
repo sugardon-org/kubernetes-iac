@@ -1,0 +1,40 @@
+name: integration-test
+
+on:
+  # TODO: remove
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { dir: ["./"] }
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Kind kubernetes cluster
+        uses: helm/kind-action@v1.2.0
+      - uses: actions/setup-node@v2
+        with:
+          node-version-file: ${{ matrix.dir }}/.nvmrc
+
+      - name: Setup pulumi
+        uses: pulumi/setup-pulumi@v2
+        with:
+          pulumi-version: 3.32.1
+      - name: Pulumi login
+        run: |
+          pulumi login --local
+
+      - name: yarn
+        run: |
+          yarn
+      - name: deploy
+        run: |
+          export PULUMI_CONFIG_PASSPHRASE=password
+          export ENVIRONMENT=local
+          pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml --yes
+        working-directory: ${{ matrix.dir }}
