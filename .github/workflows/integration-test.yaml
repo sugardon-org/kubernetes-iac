@@ -19,6 +19,7 @@ jobs:
         uses: helm/kind-action@v1.2.0
         with:
           config: "./kind-config.yaml"
+          node_image: "kindest/node:v1.20.7"
       - uses: actions/setup-node@v2
         with:
           node-version-file: ${{ matrix.dir }}/.nvmrc
