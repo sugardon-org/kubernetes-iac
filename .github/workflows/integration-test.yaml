@@ -39,5 +39,5 @@ jobs:
           export PULUMI_CONFIG_PASSPHRASE=password
           export ENVIRONMENT=local
           pulumi stack init $ENVIRONMENT
-          pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml --yes
+          pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml --refresh --yes
         working-directory: ${{ matrix.dir }}
