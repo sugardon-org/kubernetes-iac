@@ -25,6 +25,8 @@ export class Tekton extends pulumi.ComponentResource {
 
     const operator = new k8s.yaml.ConfigFile("operator", {
       file: "https://storage.googleapis.com/tekton-releases/operator/previous/v0.57.0/release.yaml",
+    }, {
+      parent: this,
     });
 
     // https://github.com/tektoncd/operator/blob/main/docs/TektonConfig.md
@@ -43,6 +45,7 @@ export class Tekton extends pulumi.ComponentResource {
         },
       },
       {
+        parent: this,
         dependsOn: [operator],
         deleteBeforeReplace: true,
       }
@@ -54,7 +57,10 @@ export class Tekton extends pulumi.ComponentResource {
       {
         directory: props.kustomizePath,
       },
-      { dependsOn: [operator, tektonConfig] }
+      {
+        parent: this,
+        dependsOn: [operator, tektonConfig],
+      }
     );
 
     this.kustomizeUrn = config.urn;
