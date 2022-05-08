@@ -33,8 +33,9 @@ jobs:
           pulumi-version: 3.32.1
       - name: Pulumi login
         run: |
-          pulumi login --local
+          export PULUMI_CONFIG_PASSPHRASE=password
           export ENVIRONMENT=local
+          pulumi login --local
           pulumi stack init $ENVIRONMENT
       - name: Pulumi disable tekton
         # TODO: enable tekton
@@ -48,6 +49,7 @@ jobs:
           command: up
           stack-name: local
           work-dir: ${{ matrix.dir }}
+          cloud-url: "file://~"
           refresh: true
         env:
           PULUMI_CONFIG_PASSPHRASE: password
