@@ -14,7 +14,9 @@ const dp: DefaultProps = {
 };
 
 export class Tekton extends pulumi.ComponentResource {
-  public kustomizeUrn: pulumi.Output<string>;
+  readonly operatorUrn: pulumi.Output<string>;
+  readonly tektonConfigUrn: pulumi.Output<string>;
+  readonly tektonChainUrn: pulumi.Output<string>;
 
   constructor(
     name: string,
@@ -32,7 +34,7 @@ export class Tekton extends pulumi.ComponentResource {
         parent: this,
       }
     );
-
+    this.operatorUrn = operator.urn;
     // TODO: Update dependsOn
     // https://github.com/pulumi/pulumi-kubernetes/issues/1833
     const operatorCrd = operator.getResource(
@@ -61,6 +63,7 @@ export class Tekton extends pulumi.ComponentResource {
         deleteBeforeReplace: true,
       }
     );
+    this.tektonConfigUrn = tektonConfig.urn;
 
     // TODO: Migrate kustomize to pulumi code
     const config = new k8s.kustomize.Directory(
@@ -73,8 +76,8 @@ export class Tekton extends pulumi.ComponentResource {
         dependsOn: operator.ready,
       }
     );
+    this.tektonChainUrn = config.urn;
 
-    this.kustomizeUrn = config.urn;
     this.registerOutputs();
   }
 }

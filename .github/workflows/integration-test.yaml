@@ -38,8 +38,8 @@ jobs:
           pulumi stack init $ENVIRONMENT
       - name: Pulumi disable tekton
         # TODO: enable tekton
-        # Need, delete before create
         # https://github.com/pulumi/pulumi/issues/2877
+        # https://github.com/pulumi/pulumi-kubernetes/issues/264
         run: |
           pulumi config set --path "root-config.disableTekton" true
       - name: Pulumi up
