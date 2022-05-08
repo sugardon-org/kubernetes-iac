@@ -23,6 +23,9 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version-file: ${{ matrix.dir }}/.nvmrc
+      - name: yarn
+        run: |
+          yarn
 
       - name: Setup pulumi
         uses: pulumi/setup-pulumi@v2
@@ -31,14 +34,18 @@ jobs:
       - name: Pulumi login
         run: |
           pulumi login --local
-
-      - name: yarn
-        run: |
-          yarn
-      - name: deploy
-        run: |
           export PULUMI_CONFIG_PASSPHRASE=password
           export ENVIRONMENT=local
           pulumi stack init $ENVIRONMENT
-          pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml --yes
-        working-directory: ${{ matrix.dir }}
+
+      # - name: deploy
+      #   run: |
+      #     pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml --yes
+      #   working-directory: ${{ matrix.dir }}
+      - name: Pulumi up
+        uses: pulumi/actions@v3
+        with:
+          command: up
+          stack-name: local
+          work-dir: ${{ matrix.dir }}
+          refresh: true
