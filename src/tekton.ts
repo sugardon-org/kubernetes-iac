@@ -29,6 +29,8 @@ export class Tekton extends pulumi.ComponentResource {
       parent: this,
     });
 
+    // TODO: Update dependsOn
+    // https://github.com/pulumi/pulumi-kubernetes/issues/1833
     const operatorCrd = operator.getResource("apiextensions.k8s.io/v1/CustomResourceDefinition", "tektonconfigs.operator.tekton.dev")
 
     // https://github.com/tektoncd/operator/blob/main/docs/TektonConfig.md
