@@ -23,15 +23,22 @@ export class Tekton extends pulumi.ComponentResource {
   ) {
     super("kubernetes:kustomize:tekton", name, {}, opts);
 
-    const operator = new k8s.yaml.ConfigFile("operator", {
-      file: "https://storage.googleapis.com/tekton-releases/operator/previous/v0.57.0/release.yaml",
-    }, {
-      parent: this,
-    });
+    const operator = new k8s.yaml.ConfigFile(
+      "operator",
+      {
+        file: "https://storage.googleapis.com/tekton-releases/operator/previous/v0.57.0/release.yaml",
+      },
+      {
+        parent: this,
+      }
+    );
 
     // TODO: Update dependsOn
     // https://github.com/pulumi/pulumi-kubernetes/issues/1833
-    const operatorCrd = operator.getResource("apiextensions.k8s.io/v1/CustomResourceDefinition", "tektonconfigs.operator.tekton.dev")
+    const operatorCrd = operator.getResource(
+      "apiextensions.k8s.io/v1/CustomResourceDefinition",
+      "tektonconfigs.operator.tekton.dev"
+    );
 
     // https://github.com/tektoncd/operator/blob/main/docs/TektonConfig.md
     const tektonConfig = new k8s.apiextensions.CustomResource(
