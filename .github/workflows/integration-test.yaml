@@ -27,6 +27,14 @@ jobs:
         run: |
           yarn
 
+      # Apply not replaceable resources, beforehand
+      # TODO: Improve
+      # https://github.com/pulumi/pulumi-kubernetes/issues/264
+      - name: apply
+        run: |
+          # Tekton operator
+          kubectl apply -f https://storage.googleapis.com/tekton-releases/operator/previous/v0.57.0/release.yaml
+
       - name: Setup pulumi
         uses: pulumi/setup-pulumi@v2
         with:
@@ -37,7 +45,6 @@ jobs:
           export PULUMI_CONFIG_PASSPHRASE=password
           export ENVIRONMENT=local
           pulumi stack init $ENVIRONMENT
-
       # - name: deploy
       #   run: |
       #     pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml --yes
