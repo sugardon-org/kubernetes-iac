@@ -28,7 +28,7 @@ export class Tekton extends pulumi.ComponentResource {
     const operator = new k8s.yaml.ConfigFile(
       "operator",
       {
-        file: "https://storage.googleapis.com/tekton-releases/operator/previous/v0.57.0/release.yaml",
+        file: "https://storage.googleapis.com/tekton-releases/operator/previous/v0.52.0/release.yaml",
       },
       {
         parent: this,
