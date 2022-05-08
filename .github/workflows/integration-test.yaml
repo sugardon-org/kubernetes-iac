@@ -1,0 +1,55 @@
+name: integration-test
+
+on:
+  # TODO: remove
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { dir: ["./"] }
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Kind kubernetes cluster
+        uses: helm/kind-action@v1.2.0
+        with:
+          config: "./kind-config.yaml"
+          node_image: "kindest/node:v1.23.4"
+      - uses: actions/setup-node@v2
+        with:
+          node-version-file: ${{ matrix.dir }}/.nvmrc
+      - name: yarn
+        run: |
+          yarn
+
+      - name: Setup pulumi
+        uses: pulumi/setup-pulumi@v2
+        with:
+          pulumi-version: 3.32.1
+      - name: Pulumi login
+        run: |
+          export PULUMI_CONFIG_PASSPHRASE=password
+          export ENVIRONMENT=local
+          pulumi login --local
+          pulumi stack init $ENVIRONMENT
+      - name: Pulumi disable tekton
+        # TODO: enable tekton
+        # https://github.com/pulumi/pulumi/issues/2877
+        # https://github.com/pulumi/pulumi-kubernetes/issues/264
+        run: |
+          pulumi config set --path "root-config.disableTekton" true
+      - name: Pulumi up
+        uses: pulumi/actions@v3
+        with:
+          command: up
+          stack-name: local
+          work-dir: ${{ matrix.dir }}
+          cloud-url: "file://~"
+          refresh: true
+        env:
+          PULUMI_CONFIG_PASSPHRASE: password

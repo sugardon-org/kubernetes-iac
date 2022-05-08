@@ -4,18 +4,6 @@ kind: Kustomization
 
 resources:
   # tekton-operator
-  - https://storage.googleapis.com/tekton-releases/operator/previous/v0.49.0/release.yaml
-  - tektonconfig.yaml
-  # tekton-pipeline
-  # https://github.com/tektoncd/pipeline/blob/main/docs/install.md
-  #- https://storage.googleapis.com/tekton-releases/pipeline/previous/v0.24.1/release.yaml
-  # tekton-triggers
-  # https://github.com/tektoncd/triggers/blob/main/docs/install.md
-  #- https://storage.googleapis.com/tekton-releases/triggers/previous/v0.14.1/release.yaml
-  #- https://storage.googleapis.com/tekton-releases/triggers/previous/v0.14.1/interceptors.yaml
-  # tekton-dashboard
-  # https://github.com/tektoncd/dashboard/blob/main/docs/install.md
-  #- https://storage.googleapis.com/tekton-releases/dashboard/previous/v0.17.0/tekton-dashboard-release.yaml
-  # tekton-chains
-  # https://github.com/tektoncd/chains
-  - https://storage.googleapis.com/tekton-releases/chains/previous/v0.2.0/release.yaml
+  #- https://storage.googleapis.com/tekton-releases/operator/previous/v0.57.0/release.yaml
+  #- tektonconfig.yaml
+  - tektonchain.yaml

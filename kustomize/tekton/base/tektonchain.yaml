@@ -1,0 +1,9 @@
+---
+#https://github.com/tektoncd/operator/blob/main/docs/TektonChain.md
+apiVersion: operator.tekton.dev/v1alpha1
+kind: TektonChain
+metadata:
+  name: chain
+  namespace: tekton-cicd
+spec:
+  targetNamespace: tekton-cicd

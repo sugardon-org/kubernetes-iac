@@ -10,6 +10,22 @@ const config = new pulumi.Config();
 export const env = config.require("environment");
 pulumi.log.info("environment : " + env);
 
+interface RootConfig {
+  disableTekton: boolean | undefined;
+}
+const rootConfig: RootConfig = {
+  disableTekton: false,
+};
+
+const rcd: RootConfig | undefined = config.getObject<RootConfig>("root-config");
+if (rcd) {
+  (Object.keys(rcd) as (keyof RootConfig)[]).forEach((key) => {
+    if (rcd[key] !== undefined) {
+      rootConfig[key] = rcd[key];
+    }
+  });
+}
+
 const metallb = new Metallb("metallb", {
   environment: env,
   kustomizePath: "./kustomize/metallb/overlays/" + env,
@@ -56,8 +72,13 @@ const csiDriverNfs = new CsiDriverNfs("CSI Driver NFS", {
 });
 export const csiDriverNfsHelmUrn = csiDriverNfs.helmUrn;
 
-const tekton = new Tekton("Tekton", {
-  environment: env,
-  kustomizePath: "./kustomize/tekton/overlays/" + env,
-});
-export const tektonKustomizeUrn = tekton.kustomizeUrn;
+// Tekton
+export let tektonUrn: pulumi.Output<string> =
+  pulumi.output("Tekton is Disable");
+if (!rootConfig.disableTekton) {
+  const tekton = new Tekton("Tekton", {
+    environment: env,
+    kustomizePath: "./kustomize/tekton/overlays/" + env,
+  });
+  tektonUrn = tekton.urn;
+}
