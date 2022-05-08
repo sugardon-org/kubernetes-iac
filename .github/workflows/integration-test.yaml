@@ -49,3 +49,5 @@ jobs:
           stack-name: local
           work-dir: ${{ matrix.dir }}
           refresh: true
+        env:
+          PULUMI_CONFIG_PASSPHRASE: password
