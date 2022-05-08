@@ -29,6 +29,8 @@ export class Tekton extends pulumi.ComponentResource {
       parent: this,
     });
 
+    const operatorCrd = operator.getResource("apiextensions.k8s.io/v1/CustomResourceDefinition", "tektonconfigs.operator.tekton.dev")
+
     // https://github.com/tektoncd/operator/blob/main/docs/TektonConfig.md
     const tektonConfig = new k8s.apiextensions.CustomResource(
       "config",
@@ -46,7 +48,7 @@ export class Tekton extends pulumi.ComponentResource {
       },
       {
         parent: this,
-        dependsOn: operator.ready,
+        dependsOn: operatorCrd,
         deleteBeforeReplace: true,
       }
     );
