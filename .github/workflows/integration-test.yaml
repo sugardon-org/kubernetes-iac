@@ -34,16 +34,14 @@ jobs:
       - name: Pulumi login
         run: |
           pulumi login --local
-          export PULUMI_CONFIG_PASSPHRASE=password
           export ENVIRONMENT=local
           pulumi stack init $ENVIRONMENT
-      - name: Pulumi config
+      - name: Pulumi disable tekton
+        # TODO: enable tekton
+        # Need, delete before create
+        # https://github.com/pulumi/pulumi/issues/2877
         run: |
           pulumi config set --path "root-config.disableTekton" true
-      # - name: deploy
-      #   run: |
-      #     pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml --yes
-      #   working-directory: ${{ matrix.dir }}
       - name: Pulumi up
         uses: pulumi/actions@v3
         with:
