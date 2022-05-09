@@ -3,7 +3,6 @@ import * as k8s from "@pulumi/kubernetes";
 
 interface tektonProps {
   environment: string;
-  kustomizePath: string;
 }
 
 interface DefaultProps {
@@ -37,9 +36,15 @@ export class Tekton extends pulumi.ComponentResource {
     this.operatorUrn = operator.urn;
     // TODO: Update dependsOn
     // https://github.com/pulumi/pulumi-kubernetes/issues/1833
-    const operatorCrd = operator.getResource(
+    const tektonConfigCrd = operator.getResource(
       "apiextensions.k8s.io/v1/CustomResourceDefinition",
       "tektonconfigs.operator.tekton.dev"
+    );
+    // TODO: Update dependsOn
+    // https://github.com/pulumi/pulumi-kubernetes/issues/1833
+    const tektonChainCrd = operator.getResource(
+      "apiextensions.k8s.io/v1/CustomResourceDefinition",
+      "tektonchains.operator.tekton.dev"
     );
 
     // https://github.com/tektoncd/operator/blob/main/docs/TektonConfig.md
@@ -59,24 +64,33 @@ export class Tekton extends pulumi.ComponentResource {
       },
       {
         parent: this,
-        dependsOn: operatorCrd,
+        dependsOn: tektonConfigCrd,
         deleteBeforeReplace: true,
       }
     );
     this.tektonConfigUrn = tektonConfig.urn;
 
-    // TODO: Migrate kustomize to pulumi code
-    const config = new k8s.kustomize.Directory(
-      props.kustomizePath,
+    // https://github.com/tektoncd/operator/blob/main/docs/TektonChain.md
+    const tektonChain = new k8s.apiextensions.CustomResource(
+      "chain",
       {
-        directory: props.kustomizePath,
+        apiVersion: "operator.tekton.dev/v1alpha1",
+        kind: "TektonChain",
+        metadata: {
+          name: "chain",
+          namespace: dp.namespace,
+        },
+        spec: {
+          targetNamespace: dp.namespace,
+        },
       },
       {
         parent: this,
-        dependsOn: operator.ready,
+        dependsOn: tektonChainCrd,
+        deleteBeforeReplace: true,
       }
     );
-    this.tektonChainUrn = config.urn;
+    this.tektonChainUrn = tektonChain.urn;
 
     this.registerOutputs();
   }

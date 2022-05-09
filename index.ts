@@ -78,7 +78,6 @@ export let tektonUrn: pulumi.Output<string> =
 if (!rootConfig.disableTekton) {
   const tekton = new Tekton("Tekton", {
     environment: env,
-    kustomizePath: "./kustomize/tekton/overlays/" + env,
   });
   tektonUrn = tekton.urn;
 }
