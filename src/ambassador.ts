@@ -35,12 +35,12 @@ export class Ambassador extends pulumi.ComponentResource {
     const operatorNamespace = new k8s.core.v1.Namespace(
       "emissary",
       {
-        metadata: {name: "emissary"}
+        metadata: { name: "emissary" },
       },
       {
-        parent: this
+        parent: this,
       }
-    )
+    );
     const ambassadorOperator = new k8s.helm.v3.Chart(
       "ambassador-operator",
       {
