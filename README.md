@@ -9,7 +9,7 @@ https://www.pulumi.com/docs/get-started/kubernetes/
 1. setup local kind cluster
 
 ```console
-$ kind create cluster --config=./kind-config.yaml
+$ kind create cluster --config=./kind-config.yaml --image=kindest/node:v1.21.2
 ```
 
 1. pulumi
