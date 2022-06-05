@@ -1,5 +1,5 @@
 import * as pulumi from "@pulumi/pulumi";
-import { Ambassador } from "./src/ambassador";
+import { Emissary } from "./src/emissary";
 import { Metallb } from "./src/metallb";
 import { IngressNginx } from "./src/ingressNginx";
 import { CertManager } from "./src/certManager";
@@ -39,10 +39,10 @@ const ingressNginx = new IngressNginx("IngressNginx", {
   namespace: "ingress-nginx",
 });
 export const ingressNginxHelmUrn = ingressNginx.helmUrn;
-const ambassador = new Ambassador("Ambassador", {
+const emissary = new Emissary("Emissary", {
   environment: env,
 });
-export const ambassadorOperatorUrn = ambassador.operatorUrn;
+export const emissaryHelmUrn = emissary.helmUrn;
 
 export const applyCenterManager = config.getBoolean("applyCertManager");
 export let certManagerHelmUrn = pulumi.output("Not Apply CertManager");
