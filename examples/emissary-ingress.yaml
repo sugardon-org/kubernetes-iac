@@ -1,9 +1,9 @@
-# https://www.getambassador.io/docs/emissary/latest/tutorials/quickstart-demo/
+# https://www.getambassador.io/docs/emissary/latest/tutorials/getting-started/
 #
 # Usage
 # $ kubectl apply -f examples/emissary-ingress.yaml
 # $ export AMBASSADOR_LB_ENDPOINT=$(kubectl -n emissary get svc emissary-ingress -o "go-template={{range .status.loadBalancer.ingress}}{{or .ip .hostname}}{{end}}")
-# $ curl -Lk "https://$AMBASSADOR_LB_ENDPOINT/backend/"
+# $ curl -i "http://$AMBASSADOR_LB_ENDPOINT/backend/"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -40,6 +40,20 @@ spec:
       targetPort: 8080
   selector:
     app: quote
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Listener
+metadata:
+  name: emissary-ingress-listener-8080
+  namespace: emissary
+spec:
+  port: 8080
+  protocol: HTTP
+  securityModel: XFP
+  hostBinding:
+    namespace:
+      from: ALL
 
 ---
 apiVersion: getambassador.io/v3alpha1
