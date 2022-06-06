@@ -6,10 +6,13 @@ https://www.pulumi.com/docs/get-started/kubernetes/
 
 ## local
 
-1. setup local kind cluster
+1. setup local kubernetes cluster
 
 ```console
-$ kind create cluster --config=./kind-config.yaml
+# kind
+$ kind create cluster --config=./kind-config.yaml --image=kindest/node:v1.21.2
+# minikube
+$ minikube start --kubernetes-version=v1.21.2
 ```
 
 1. pulumi
