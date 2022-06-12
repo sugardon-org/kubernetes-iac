@@ -1,22 +1,24 @@
+# Usage
+#
+# $ kubectl apply -f examples/ingress.yaml
+# $ curl -i "http://${IP ADDRESS}:${PORT}/example" -H "Host: sugardon.com"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: example-ingress-nginx
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    #kubernetes.io/ingress.class: "nginx"
+  name: example-ingress
 spec:
-  #ingressClassName: nginx
+  # Use emissary ingress
+  ingressClassName: emissary
   rules:
-    - host: sugardon.com
+    - host: "sugardon.com"
       http:
         paths:
           - path: /example
             pathType: Prefix
             backend:
               service:
-                name: example-ingress-nginx-service
+                name: example-ingress
                 port:
                   number: 80
 
@@ -24,35 +26,34 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-ingress-nginx-service
+  name: example-ingress
 spec:
-  type: NodePort
   ports:
     - name: http
       port: 80
       protocol: TCP
-      targetPort: example
+      targetPort: nginxdemos
   selector:
-    app: example-ingress-nginx-deployment
+    app: example-ingress
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-ingress-nginx-deployment
+  name: example-ingress
 spec:
   selector:
     matchLabels:
-      app: example-ingress-nginx-deployment
+      app: example-ingress
   replicas: 1
   template:
     metadata:
       labels:
-        app: example-ingress-nginx-deployment
+        app: example-ingress
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.14.2
+        - name: nginxdemos
+          image: nginxdemos/hello:0.3
           ports:
-            - name: example
+            - name: nginxdemos
               containerPort: 80

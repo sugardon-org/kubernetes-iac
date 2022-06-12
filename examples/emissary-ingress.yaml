@@ -41,19 +41,20 @@ spec:
   selector:
     app: quote
 
----
-apiVersion: getambassador.io/v3alpha1
-kind: Listener
-metadata:
-  name: emissary-ingress-listener-8080
-  namespace: emissary
-spec:
-  port: 8080
-  protocol: HTTP
-  securityModel: XFP
-  hostBinding:
-    namespace:
-      from: ALL
+# https://github.com/emissary-ingress/emissary/blob/e91276327cce20aa273e2d1be46c4f724de6953a/charts/emissary-ingress/values.yaml.in#L408
+#---
+#apiVersion: getambassador.io/v3alpha1
+#kind: Listener
+#metadata:
+#  name: emissary-ingress-listener-8080
+#  namespace: emissary
+#spec:
+#  port: 8080
+#  protocol: HTTP
+#  securityModel: XFP
+#  hostBinding:
+#    namespace:
+#      from: ALL
 
 ---
 apiVersion: getambassador.io/v3alpha1

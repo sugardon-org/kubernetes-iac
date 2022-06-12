@@ -36,6 +36,7 @@ export class Emissary extends pulumi.ComponentResource {
         },
         values: {
           replicaCount: 1,
+          createDefaultListeners: true,
           ingressClassResource: {
             enabled: true,
             name: "emissary",
