@@ -16,14 +16,6 @@ export class Emissary extends pulumi.ComponentResource {
     super("kubernetes:helm:emissary", name, {}, opts);
     const options = { parent: this };
 
-    const namespace = new k8s.core.v1.Namespace(
-      "emissary",
-      {
-        metadata: { name: "emissary" },
-      },
-      options
-    );
-
     const crds = new k8s.yaml.ConfigFile(
       "crds",
       {
@@ -32,17 +24,23 @@ export class Emissary extends pulumi.ComponentResource {
       options
     );
 
-    const emissaryChart = new k8s.helm.v3.Chart(
+    const emissaryChart = new k8s.helm.v3.Release(
       "emissary-ingress",
       {
         chart: "emissary-ingress",
-        version: "7.3.2",
-        namespace: namespace.metadata.name,
-        fetchOpts: {
+        version: "7.4.1",
+        namespace: "emissary",
+        createNamespace: true,
+        repositoryOpts: {
           repo: "https://app.getambassador.io",
         },
         values: {
           replicaCount: 1,
+          createDefaultListeners: true,
+          ingressClassResource: {
+            enabled: true,
+            name: "emissary",
+          },
         },
       },
       {
