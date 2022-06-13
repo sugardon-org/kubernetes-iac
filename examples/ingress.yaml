@@ -11,7 +11,7 @@ spec:
   # Use emissary ingress
   ingressClassName: emissary
   rules:
-    - host: "sugardon.com"
+    - host: sugardon.com
       http:
         paths:
           - path: /example
