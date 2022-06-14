@@ -34,7 +34,7 @@ jobs:
       - name: Setup pulumi
         uses: pulumi/setup-pulumi@v2
         with:
-          pulumi-version: 3.32.1
+          pulumi-version: 3.34.1
       - name: Pulumi login
         run: |
           export PULUMI_CONFIG_PASSPHRASE=password
