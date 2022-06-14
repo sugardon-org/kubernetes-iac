@@ -15,11 +15,15 @@ jobs:
       matrix: { dir: ["./"] }
     steps:
       - uses: actions/checkout@v2
-      - name: Create Kind kubernetes cluster
-        uses: helm/kind-action@v1.2.0
+      #- name: Create Kind kubernetes cluster
+      #  uses: helm/kind-action@v1.2.0
+      #  with:
+      #    config: "./kind-config.yaml"
+      #    node_image: "kindest/node:v1.21.2"
+      - name: start minikube
+        uses: medyagh/setup-minikube@master
         with:
-          config: "./kind-config.yaml"
-          node_image: "kindest/node:v1.21.2"
+          kubernetes-version: v1.21.5
       - uses: actions/setup-node@v2
         with:
           node-version-file: ${{ matrix.dir }}/.nvmrc
@@ -30,7 +34,7 @@ jobs:
       - name: Setup pulumi
         uses: pulumi/setup-pulumi@v2
         with:
-          pulumi-version: 3.32.1
+          pulumi-version: 3.34.1
       - name: Pulumi login
         run: |
           export PULUMI_CONFIG_PASSPHRASE=password
