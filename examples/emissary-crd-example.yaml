@@ -73,10 +73,10 @@ spec:
   # prefix: /example-emissary
   #
   # https://www.getambassador.io/docs/emissary/latest/topics/using/prefix_regex/
-  prefix: '/example-emissary(/|$)(.*)'
+  prefix: "/example-emissary(/|$)(.*)"
   prefix_regex: true
   regex_rewrite:
     # https://www.getambassador.io/docs/emissary/latest/topics/using/rewrites/
-    pattern: '/example-emissary(/|$)(.*)'
+    pattern: "/example-emissary(/|$)(.*)"
     substitution: '/\2'
   service: nginxdemos
