@@ -1,0 +1,82 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxdemos
+spec:
+  selector:
+    matchLabels:
+      app: nginxdemos
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginxdemos
+    spec:
+      containers:
+        - name: nginxdemos
+          image: nginxdemos/hello:0.3
+          ports:
+            - name: nginxdemos
+              containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginxdemos
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: nginxdemos
+  selector:
+    app: nginxdemos
+
+---
+# https://cert-manager.io/docs/usage/certificate/
+# Concepts: https://cert-manager.io/docs/concepts/certificate/
+# example doc
+# https://www.ibm.com/docs/ja/cpfs?topic=cmcm-using-acme-issue-certificates
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sugardon-com
+spec:
+  secretName: sugardon-com-tls
+  dnsNames:
+    - sugardon.com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+
+---
+# https://www.getambassador.io/docs/emissary/latest/topics/running/tls/
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: sugardon-com-host
+spec:
+  hostname: sugardon.com
+  tlsSecret:
+    name: sugardon-com-tls
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: sugardon-com-mapping
+spec:
+  hostname: sugardon.com
+  # https://www.getambassador.io/docs/emissary/latest/topics/using/intro-mappings/#resources
+  # prefix: /example-emissary
+  #
+  # https://www.getambassador.io/docs/emissary/latest/topics/using/prefix_regex/
+  prefix: '/example-emissary(/|$)(.*)'
+  prefix_regex: true
+  regex_rewrite:
+    # https://www.getambassador.io/docs/emissary/latest/topics/using/rewrites/
+    pattern: '/example-emissary(/|$)(.*)'
+    substitution: '/\2'
+  service: nginxdemos
