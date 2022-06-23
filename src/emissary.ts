@@ -17,7 +17,7 @@ export class Emissary extends pulumi.ComponentResource {
     super("kubernetes:helm:emissary", name, {}, opts);
     const options = { parent: this };
 
-    const namespace = "emissary"
+    const namespace = "emissary";
     const crds = new k8s.yaml.ConfigFile(
       "crds",
       {
@@ -50,7 +50,7 @@ export class Emissary extends pulumi.ComponentResource {
       }
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     const listener = new k8s.yaml.ConfigFile(
       "listner",
       {
