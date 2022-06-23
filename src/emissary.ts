@@ -59,7 +59,7 @@ export class Emissary extends pulumi.ComponentResource {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
           (obj: any, opts: pulumi.CustomResourceOptions) => {
             if (obj.kind === "Listener") {
-              obj.namespace = namespace;
+              obj.metadata.namespace = namespace;
             }
           },
         ],
