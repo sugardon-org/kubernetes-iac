@@ -1,0 +1,27 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Listener
+metadata:
+  name: default-http-listener
+spec:
+  port: 8080
+  protocol: HTTP
+  securityModel: XFP
+  statsPrefix: default-http-listener
+  hostBinding:
+    namespace:
+      from: ALL
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Listener
+metadata:
+  name: default-https-listener
+spec:
+  port: 8443
+  protocol: HTTPS
+  securityModel: XFP
+  statsPrefix: default-https-listener
+  hostBinding:
+    namespace:
+      from: ALL

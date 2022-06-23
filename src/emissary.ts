@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as pulumi from "@pulumi/pulumi";
 import * as k8s from "@pulumi/kubernetes";
 
@@ -16,6 +17,7 @@ export class Emissary extends pulumi.ComponentResource {
     super("kubernetes:helm:emissary", name, {}, opts);
     const options = { parent: this };
 
+    const namespace = "emissary";
     const crds = new k8s.yaml.ConfigFile(
       "crds",
       {
@@ -29,14 +31,13 @@ export class Emissary extends pulumi.ComponentResource {
       {
         chart: "emissary-ingress",
         version: "7.4.1",
-        namespace: "emissary",
+        namespace: namespace,
         createNamespace: true,
         repositoryOpts: {
           repo: "https://app.getambassador.io",
         },
         values: {
           replicaCount: 1,
-          createDefaultListeners: true,
           ingressClassResource: {
             enabled: true,
             name: "emissary",
@@ -45,6 +46,26 @@ export class Emissary extends pulumi.ComponentResource {
       },
       {
         dependsOn: crds,
+        ...options,
+      }
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+    const listener = new k8s.yaml.ConfigFile(
+      "listner",
+      {
+        file: path.join(__dirname, "listener.yaml"),
+        transformations: [
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+          (obj: any, opts: pulumi.CustomResourceOptions) => {
+            if (obj.kind === "Listener") {
+              obj.namespace = namespace;
+            }
+          },
+        ],
+      },
+      {
+        dependsOn: emissaryChart,
         ...options,
       }
     );
