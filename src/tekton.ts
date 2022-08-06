@@ -60,6 +60,12 @@ export class Tekton extends pulumi.ComponentResource {
         spec: {
           profile: "all",
           targetNamespace: dp.namespace,
+          pruner: {
+            // https://github.com/tektoncd/operator/blob/main/docs/TektonConfig.md#pruner
+            resources: ["taskrun", "pipelinerun"],
+            keep: 6,
+            schedule: "0 0 * * *",
+          },
         },
       },
       {
