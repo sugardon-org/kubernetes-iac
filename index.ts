@@ -5,14 +5,14 @@ import { IngressNginx } from "./src/ingressNginx";
 import { CertManager } from "./src/certManager";
 import { NfsServer } from "./src/nfsServer";
 import { CsiDriverNfs } from "./src/csiDriverNfs";
-import { Tekton } from "./src/tekton";
 
 const config = new pulumi.Config();
 export const env = config.require("environment");
 pulumi.log.info("environment : " + env);
 
 interface RootConfig {
-  disableTekton: boolean | undefined;
+  // TODO: Remove disableTekton
+  disableTekton: boolean | undefined; // Remove
 }
 const rootConfig: RootConfig = {
   disableTekton: false,
@@ -77,13 +77,3 @@ const csiDriverNfs = new CsiDriverNfs("CSI Driver NFS", {
   environment: env,
 });
 export const csiDriverNfsHelmUrn = csiDriverNfs.helmUrn;
-
-// Tekton
-export let tektonUrn: pulumi.Output<string> =
-  pulumi.output("Tekton is Disable");
-if (!rootConfig.disableTekton) {
-  const tekton = new Tekton("Tekton", {
-    environment: env,
-  });
-  tektonUrn = tekton.urn;
-}

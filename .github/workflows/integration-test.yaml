@@ -41,12 +41,6 @@ jobs:
           export ENVIRONMENT=local
           pulumi login --local
           pulumi stack init $ENVIRONMENT
-      - name: Pulumi disable tekton
-        # TODO: enable tekton
-        # https://github.com/pulumi/pulumi/issues/2877
-        # https://github.com/pulumi/pulumi-kubernetes/issues/264
-        run: |
-          pulumi config set --path "root-config.disableTekton" true
       - name: Pulumi up
         uses: pulumi/actions@v3
         with:
