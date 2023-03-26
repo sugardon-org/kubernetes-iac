@@ -31,7 +31,7 @@ if (rcd) {
 const provider = new kubernetes.Provider(
   "kubernetes",
   {
-    context: "kubernetes-admin-cluster.local@cluster.local",
+    // context: "kubernetes-admin-cluster.local@cluster.local",
     enableServerSideApply: true,
   },
   undefined
