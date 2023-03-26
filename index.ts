@@ -28,10 +28,14 @@ if (rcd) {
   });
 }
 
-const provider = new kubernetes.Provider("kubernetes", {
-  context: "kubernetes-admin-cluster.local@cluster.local",
-  enableServerSideApply: true,
-}, undefined);
+const provider = new kubernetes.Provider(
+  "kubernetes",
+  {
+    context: "kubernetes-admin-cluster.local@cluster.local",
+    enableServerSideApply: true,
+  },
+  undefined
+);
 
 const metallb = new Metallb("metallb", {
   environment: env,
