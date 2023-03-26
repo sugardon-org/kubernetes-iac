@@ -17,10 +17,15 @@ export class IngressNginx extends pulumi.ComponentResource {
     super("kubernetes:helm:ingressNginx", name, {}, opts);
 
     const n = props.namespace || "ingress-nginx";
-    const ingressNamaspace = new k8s.core.v1.Namespace(
+    const ingressNamaspace = new k8s.core.v1.NamespacePatch(
       n,
       {
-        metadata: { name: n },
+        metadata: {
+          name: n,
+          annotations: {
+            "pulumi.com/patchForce": "true",
+          },
+        },
       },
       opts
     );

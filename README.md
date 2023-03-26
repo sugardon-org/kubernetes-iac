@@ -27,16 +27,28 @@ $ pulumi up --stack=$ENVIRONMENT --config-file=./Pulumi.local.yaml
 
 ## sugardon01
 
-```console
-$ kubectl config use-context ${SUGARDON01_CONTEXT}
+### Enable Server Side Apply
 
-$ yarn
-$ export PULUMI_CONFIG_PASSPHRASE=${PASSPHRASE}
-$ export ENVIRONMENT=sugardon01
-$ pulumi login
-$ pulumi stack select $ENVIRONMENT
+<https://www.pulumi.com/registry/packages/kubernetes/how-to-guides/managing-resources-with-server-side-apply/#managing-resources-with-server-side-apply>
+
+```
+export PULUMI_K8S_ENABLE_PATCH_FORCE="true"
+```
+
+### Run
+
+```bash
+kubectl config use-context ${SUGARDON01_CONTEXT}
+
+yarn
+export PULUMI_CONFIG_PASSPHRASE=${PASSPHRASE}
+export ENVIRONMENT=sugardon01
+pulumi login
+pulumi stack select $ENVIRONMENT
+
 # check Pulumi.sugardon01.yaml before execute
-$ pulumi up --stack=$ENVIRONMENT
+pulumi up --stack=$ENVIRONMENT
+
 # If different from target cluster
 # $ pulumi up --refresh
 ```
