@@ -1,4 +1,5 @@
 import * as pulumi from "@pulumi/pulumi";
+import * as kubernetes from "@pulumi/kubernetes";
 import { Emissary } from "./src/emissary";
 import { Metallb } from "./src/metallb";
 import { IngressNginx } from "./src/ingressNginx";
@@ -27,6 +28,11 @@ if (rcd) {
   });
 }
 
+const provider = new kubernetes.Provider("kubernetes", {
+  context: "kubernetes-admin-cluster.local@cluster.local",
+  enableServerSideApply: true,
+}, undefined);
+
 const metallb = new Metallb("metallb", {
   environment: env,
   kustomizePath: "./kustomize/metallb/overlays/" + env,
@@ -34,23 +40,35 @@ const metallb = new Metallb("metallb", {
 export const metallbKustomizeUrn = metallb.kustomizeUrn;
 
 // Ingress
-const ingressNginx = new IngressNginx("IngressNginx", {
-  environment: env,
-  namespace: "ingress-nginx",
-});
+const ingressNginx = new IngressNginx(
+  "IngressNginx",
+  {
+    environment: env,
+    namespace: "ingress-nginx",
+  },
+  { provider: provider }
+);
 export const ingressNginxHelmUrn = ingressNginx.helmUrn;
-const emissary = new Emissary("Emissary", {
-  environment: env,
-});
+const emissary = new Emissary(
+  "Emissary",
+  {
+    environment: env,
+  },
+  { provider: provider }
+);
 export const emissaryHelmUrn = emissary.helmUrn;
 
 export const applyCenterManager = config.getBoolean("applyCertManager");
 export let certManagerHelmUrn = pulumi.output("Not Apply CertManager");
 if (applyCenterManager) {
-  const certManager = new CertManager("CertManager", {
-    environment: env,
-    namespace: "cert-manager",
-  });
+  const certManager = new CertManager(
+    "CertManager",
+    {
+      environment: env,
+      namespace: "cert-manager",
+    },
+    { provider: provider }
+  );
   certManagerHelmUrn = certManager.helmUrn;
 }
 
@@ -66,14 +84,22 @@ export let csiServerKustomizeUrn: pulumi.Output<string> = pulumi.output(
   "Not Apply NFS Server"
 );
 if (csidata.applyNfsServer) {
-  const nfsServer = new NfsServer("NfsServer", {
-    environment: env,
-    kustomizePath: "./kustomize/nfs-server/overlays/" + env,
-  });
+  const nfsServer = new NfsServer(
+    "NfsServer",
+    {
+      environment: env,
+      kustomizePath: "./kustomize/nfs-server/overlays/" + env,
+    },
+    { provider: provider }
+  );
   csiServerKustomizeUrn = nfsServer.kustomizeUrn;
 }
 
-const csiDriverNfs = new CsiDriverNfs("CSI Driver NFS", {
-  environment: env,
-});
+const csiDriverNfs = new CsiDriverNfs(
+  "CSI Driver NFS",
+  {
+    environment: env,
+  },
+  { provider: provider }
+);
 export const csiDriverNfsHelmUrn = csiDriverNfs.helmUrn;

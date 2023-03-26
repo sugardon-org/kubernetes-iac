@@ -18,11 +18,11 @@ export class CsiDriverNfs extends pulumi.ComponentResource {
     super("kubernetes:helm:csiDriverNfs", name, {}, opts);
 
     // https://github.com/kubernetes-csi/csi-driver-nfs/tree/master/charts
-    const cdn = new k8s.helm.v3.Chart("csi-driver-nfs", {
+    const cdn = new k8s.helm.v3.Release("csi-driver-nfs", {
       chart: "csi-driver-nfs",
       version: "3.0.0",
       namespace: "kube-system",
-      fetchOpts: {
+      repositoryOpts: {
         repo: "https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts",
       },
       values: {
