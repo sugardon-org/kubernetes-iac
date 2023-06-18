@@ -37,12 +37,6 @@ const provider = new kubernetes.Provider(
   undefined
 );
 
-const metallb = new Metallb("metallb", {
-  environment: env,
-  kustomizePath: "./kustomize/metallb/overlays/" + env,
-});
-export const metallbKustomizeUrn = metallb.kustomizeUrn;
-
 // Ingress
 const ingressNginx = new IngressNginx(
   "IngressNginx",
