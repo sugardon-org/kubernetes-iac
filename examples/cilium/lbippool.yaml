@@ -1,0 +1,23 @@
+---
+# https://docs.cilium.io/en/stable/network/lb-ipam/
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: emissary-ingress
+spec:
+  cidrs:
+  - cidr: "192.168.151.0/24"
+  serviceSelector:
+    matchLabels:
+      "app.kubernetes.io/name": "emissary-ingress"
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: ingress-nginx
+spec:
+  cidrs:
+  - cidr: "153.127.56.5/32"
+  serviceSelector:
+    matchLabels:
+      "app.kubernetes.io/name": "ingress-nginx"

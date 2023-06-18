@@ -1,0 +1,12 @@
+---
+#https://docs.cilium.io/en/stable/network/bgp-control-plane/
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumBGPPeeringPolicy
+metadata:
+ name: opnsense
+spec:
+ virtualRouters:
+ - localASN: 65020
+   neighbors:
+   - peerAddress: "192.168.120.11/32"
+     peerASN: 65011
